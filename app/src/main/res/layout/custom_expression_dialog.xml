@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="8dp"
+    app:cardCornerRadius="12dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tv_tittle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/manrope"
+            android:text="Bagaimana harimu?"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_happy"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/happy"
+            app:layout_constraintStart_toStartOf="@id/tv_tittle"
+            app:layout_constraintTop_toBottomOf="@id/tv_tittle" />
+
+        <ImageView
+            android:id="@+id/iv_angry"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/angry"
+            app:layout_constraintStart_toEndOf="@id/iv_happy"
+            app:layout_constraintTop_toBottomOf="@id/tv_tittle" />
+
+        <ImageView
+            android:id="@+id/iv_love"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/love"
+            app:layout_constraintStart_toEndOf="@id/iv_angry"
+            app:layout_constraintTop_toBottomOf="@id/tv_tittle" />
+
+        <ImageView
+            android:id="@+id/iv_normal"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/normal"
+            app:layout_constraintStart_toEndOf="@id/iv_love"
+            app:layout_constraintTop_toBottomOf="@id/tv_tittle" />
+
+        <ImageView
+            android:id="@+id/iv_sad"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/sad"
+            app:layout_constraintStart_toEndOf="@id/iv_normal"
+            app:layout_constraintTop_toBottomOf="@id/tv_tittle" />
+
+        <ImageView
+            android:id="@+id/iv_shock"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/shocked"
+            app:layout_constraintStart_toEndOf="@id/iv_sad"
+            app:layout_constraintTop_toBottomOf="@id/tv_tittle" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.cardview.widget.CardView>
