@@ -8,15 +8,6 @@ Aplikasi sederhana untuk mencatat kegiatan harian dan mengelola diary pribadi. A
 - **Pencarian Diary**: 
   - Pengguna dapat mencari catatan diary dengan mengetikkan judul di kolom pencarian.
 
-- **Riwayat Transaksi**: 
-  - Melihat daftar pemasukan dan pengeluaran sebelumnya.
-
-- **Analisis Total**: 
-  - Menampilkan total pemasukan, total pengeluaran, dan saldo tersisa.
-
-- **Keluar**: 
-  - Keluar dari aplikasi.
-
 ## Persyaratan
 
 - Pastikan Kotlin telah terinstal pada sistem Anda. Anda dapat mengunduh dan menginstalnya dari [situs resmi Kotlin](https://kotlinlang.org/).
