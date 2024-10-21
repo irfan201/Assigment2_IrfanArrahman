@@ -35,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun checkValidate(): Boolean {
         binding.apply {
-            val email = etEmail.text.toString()
+            val email = etEmail.text?.trim().toString()
             val password = etPassword.text.toString()
 
             if (email.isEmpty()) {
