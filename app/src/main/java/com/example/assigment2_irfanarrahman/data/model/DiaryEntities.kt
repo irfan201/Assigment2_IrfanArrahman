@@ -1,4 +1,4 @@
-package com.example.assigment2_irfanarrahman.room
+package com.example.assigment2_irfanarrahman.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

@@ -1,4 +1,4 @@
-package com.example.assigment2_irfanarrahman.preference
+package com.example.assigment2_irfanarrahman.data.source.local.preference
 
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey

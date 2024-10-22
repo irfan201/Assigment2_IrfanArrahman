@@ -1,4 +1,4 @@
-package com.example.assigment2_irfanarrahman.preference
+package com.example.assigment2_irfanarrahman.data.source.local.preference
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -37,7 +37,7 @@ class PreferenceDataStore private constructor(private val dataStore: DataStore<P
     companion object{
         @Volatile
         private var INSTANCE: PreferenceDataStore? = null
-        fun getInstance(dataStore: DataStore<Preferences>): PreferenceDataStore{
+        fun getInstance(dataStore: DataStore<Preferences>): PreferenceDataStore {
             return INSTANCE ?: synchronized(this){
                 val instance = PreferenceDataStore(dataStore)
                 INSTANCE = instance

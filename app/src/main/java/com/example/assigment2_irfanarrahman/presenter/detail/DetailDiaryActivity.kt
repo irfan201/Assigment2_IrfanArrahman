@@ -1,32 +1,58 @@
-package com.example.assigment2_irfanarrahman.view
+package com.example.assigment2_irfanarrahman.presenter.detail
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.assigment2_irfanarrahman.R
 import com.example.assigment2_irfanarrahman.databinding.ActivityDetailDiaryBinding
-import com.example.assigment2_irfanarrahman.room.DiaryDatabase
-import com.example.assigment2_irfanarrahman.room.DiaryEntities
+import com.example.assigment2_irfanarrahman.data.source.local.room.DiaryDatabase
+import com.example.assigment2_irfanarrahman.data.model.DiaryEntities
+import com.example.assigment2_irfanarrahman.domain.model.DiaryStateDetail
+import com.example.assigment2_irfanarrahman.presenter.update.UpdateDiaryActivity
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class DetailDiaryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailDiaryBinding
-    private lateinit var diaryDatabase: DiaryDatabase
+
+    private val viewModel: DetailViewModel by viewModels()
     private var idUser: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailDiaryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        diaryDatabase = DiaryDatabase.getDatabase(this)
         idUser = intent.getIntExtra(USER_ID, 0)
+        viewModel.getDiaryDetail(idUser)
         lifecycleScope.launch {
-            initData(diaryDatabase.diaryDao().getDiaryDetail(idUser))
+            viewModel.diaryState.collect(object : FlowCollector<DiaryStateDetail> {
+                override suspend fun emit(value: DiaryStateDetail) {
+                    when (value) {
+                        is DiaryStateDetail.Error -> {
+                            Toast.makeText(
+                                this@DetailDiaryActivity,
+                                value.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        DiaryStateDetail.Loading -> {}
+                        is DiaryStateDetail.Success -> {
+                            initData(value.diary)
+                        }
+                    }
+                }
+
+            })
         }
 
         setSupportActionBar(binding.toolbar)
@@ -63,7 +89,7 @@ class DetailDiaryActivity : AppCompatActivity() {
 
     private fun editDiary(idDiary: Int) {
         val intent = Intent(this, UpdateDiaryActivity::class.java)
-        intent.putExtra(UpdateDiaryActivity.ID_DIARY,idDiary)
+        intent.putExtra(UpdateDiaryActivity.ID_DIARY, idDiary)
         startActivity(intent)
     }
 
@@ -72,7 +98,12 @@ class DetailDiaryActivity : AppCompatActivity() {
             tvDetailTittle.text = diaryEntities.tittle
             tvDetailDate.text = diaryEntities.date
             tvDetailDesc.text = diaryEntities.note
-            ivExpresionDetail.setImageDrawable(ContextCompat.getDrawable(this@DetailDiaryActivity,diaryEntities.expressionImage))
+            ivExpresionDetail.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this@DetailDiaryActivity,
+                    diaryEntities.expressionImage
+                )
+            )
         }
     }
 

@@ -1,16 +1,23 @@
-package com.example.assigment2_irfanarrahman.view
+package com.example.assigment2_irfanarrahman.presenter
 
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.assigment2_irfanarrahman.R
 import com.example.assigment2_irfanarrahman.databinding.ActivityMainBinding
+import com.example.assigment2_irfanarrahman.presenter.calenderList.CalendarListFragment
+import com.example.assigment2_irfanarrahman.presenter.list.ListDiaryViewModel
+import com.example.assigment2_irfanarrahman.presenter.list.ListFragment
 import com.google.android.material.navigation.NavigationBarView.OnItemSelectedListener
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(){
     private lateinit var binding: ActivityMainBinding
 
@@ -54,8 +61,6 @@ class MainActivity : AppCompatActivity(){
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).commit()
     }
-
-
 
 
 }

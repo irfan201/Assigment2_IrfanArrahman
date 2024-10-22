@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_primary"
-    tools:context=".view.UpdateDiaryActivity">
+    tools:context=".presenter.update.UpdateDiaryActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"

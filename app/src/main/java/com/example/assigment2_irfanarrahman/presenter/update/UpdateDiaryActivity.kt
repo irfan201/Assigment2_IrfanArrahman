@@ -1,49 +1,53 @@
-package com.example.assigment2_irfanarrahman.view
+package com.example.assigment2_irfanarrahman.presenter.update
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.widget.DatePicker
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.assigment2_irfanarrahman.R
 import com.example.assigment2_irfanarrahman.databinding.ActivityUpdateDiaryBinding
 import com.example.assigment2_irfanarrahman.databinding.CustomExpressionDialogBinding
-import com.example.assigment2_irfanarrahman.room.DiaryDatabase
-import com.example.assigment2_irfanarrahman.room.DiaryEntities
+import com.example.assigment2_irfanarrahman.data.model.DiaryEntities
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
 
+@AndroidEntryPoint
 class UpdateDiaryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityUpdateDiaryBinding
-    private lateinit var diaryDatabase: DiaryDatabase
+    private val viewModel: UpdateDiaryViewModel by viewModels()
     private val selectedDate = Calendar.getInstance()
     private var selectedImageId: Int = R.drawable.happy
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUpdateDiaryBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        diaryDatabase = DiaryDatabase.getDatabase(this)
         val dataId = intent.getIntExtra(ID_DIARY, 0)
 
-        lifecycleScope.launch {
-            if (dataId != 0) {
-                val data = diaryDatabase.diaryDao().getDiaryDetail(dataId)
-                addDiary(dataId, data)
-            } else {
-                Log.d("data", "kemana $dataId")
-                addDiary(null, null)
+
+        if (dataId != 0) {
+            lifecycleScope.launch {
+                viewModel.getDiaryDetail(dataId)
             }
+            val data = viewModel.diaryData.value
+            addDiary(dataId, data)
+            Log.d("data", "kemana $dataId")
+        } else {
+            Log.d("data", "kemana $dataId")
+            addDiary(null, null)
         }
+
 
         binding.ivExpresion.setOnClickListener {
             showExpressionDialog()
@@ -101,7 +105,7 @@ class UpdateDiaryActivity : AppCompatActivity() {
                         lifecycleScope.launch {
                             if (diaryEntities != null) {
                                 Log.d("data", "$tittle $desc")
-                                diaryDatabase.diaryDao().updateDiary(
+                                viewModel.updateDiary(
                                     DiaryEntities(
                                         id = index ?: 0,
                                         tittle = tittle,
@@ -111,7 +115,7 @@ class UpdateDiaryActivity : AppCompatActivity() {
                                     )
                                 )
                             } else {
-                                diaryDatabase.diaryDao().insertDiary(
+                                viewModel.insertDiary(
                                     DiaryEntities(
                                         tittle = tittle,
                                         date = etDate.text.toString(),
@@ -122,7 +126,6 @@ class UpdateDiaryActivity : AppCompatActivity() {
                             }
 
                         }
-                        startActivity(Intent(this@UpdateDiaryActivity, MainActivity::class.java))
                         finish()
                     }
 
@@ -188,6 +191,8 @@ class UpdateDiaryActivity : AppCompatActivity() {
             selectedDate.get(Calendar.MONTH),
             selectedDate.get(Calendar.DAY_OF_MONTH)
         )
+        val datePicker = datePickerDialog.datePicker
+        datePicker.maxDate = System.currentTimeMillis()
         datePickerDialog.show()
     }
 
@@ -214,7 +219,6 @@ class UpdateDiaryActivity : AppCompatActivity() {
         return true
 
     }
-
 
     companion object {
         val ID_DIARY = "id_diary"

@@ -1,12 +1,11 @@
-package com.example.assigment2_irfanarrahman.adapter
+package com.example.assigment2_irfanarrahman.presenter.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.assigment2_irfanarrahman.DiaryListener
 import com.example.assigment2_irfanarrahman.databinding.ItemDiaryBinding
-import com.example.assigment2_irfanarrahman.room.DiaryEntities
+import com.example.assigment2_irfanarrahman.data.model.DiaryEntities
 
 class DiaryAdapter(var listDiary: List<DiaryEntities>, val listener: DiaryListener) :
     RecyclerView.Adapter<DiaryAdapter.MyViewHolder>() {

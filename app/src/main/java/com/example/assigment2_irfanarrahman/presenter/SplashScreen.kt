@@ -1,4 +1,4 @@
-package com.example.assigment2_irfanarrahman.view
+package com.example.assigment2_irfanarrahman.presenter
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.example.assigment2_irfanarrahman.databinding.ActivitySplashScreenBinding
-import com.example.assigment2_irfanarrahman.preference.PreferenceDataStore
-import com.example.assigment2_irfanarrahman.preference.dataStore
+import com.example.assigment2_irfanarrahman.data.source.local.preference.PreferenceDataStore
+import com.example.assigment2_irfanarrahman.data.source.local.preference.dataStore
 
 @SuppressLint("CustomSplashScreen")
 class SplashScreen : AppCompatActivity() {

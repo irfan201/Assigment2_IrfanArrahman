@@ -1,4 +1,4 @@
-package com.example.assigment2_irfanarrahman.view
+package com.example.assigment2_irfanarrahman.presenter
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,8 +6,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.assigment2_irfanarrahman.databinding.ActivityLoginBinding
-import com.example.assigment2_irfanarrahman.preference.PreferenceDataStore
-import com.example.assigment2_irfanarrahman.preference.dataStore
+import com.example.assigment2_irfanarrahman.data.source.local.preference.PreferenceDataStore
+import com.example.assigment2_irfanarrahman.data.source.local.preference.dataStore
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {

@@ -1,10 +1,11 @@
-package com.example.assigment2_irfanarrahman.room
+package com.example.assigment2_irfanarrahman.data.source.local.room
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import com.example.assigment2_irfanarrahman.data.model.DiaryEntities
 
 @Dao
 interface DiaryDao {

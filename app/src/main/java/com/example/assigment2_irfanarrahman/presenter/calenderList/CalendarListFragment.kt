@@ -1,4 +1,4 @@
-package com.example.assigment2_irfanarrahman.view
+package com.example.assigment2_irfanarrahman.presenter.calenderList
 
 import android.content.Intent
 import android.os.Build
@@ -9,15 +9,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.DatePicker.OnDateChangedListener
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.assigment2_irfanarrahman.DiaryListener
-import com.example.assigment2_irfanarrahman.adapter.DiaryAdapter
+import com.example.assigment2_irfanarrahman.presenter.adapter.DiaryListener
+import com.example.assigment2_irfanarrahman.presenter.adapter.DiaryAdapter
 import com.example.assigment2_irfanarrahman.databinding.FragmentCalendarListBinding
-import com.example.assigment2_irfanarrahman.room.DiaryDatabase
-import com.example.assigment2_irfanarrahman.room.DiaryEntities
+import com.example.assigment2_irfanarrahman.data.model.DiaryEntities
+import com.example.assigment2_irfanarrahman.domain.model.DiaryState
+import com.example.assigment2_irfanarrahman.presenter.detail.DetailDiaryActivity
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -26,9 +30,9 @@ import java.util.Locale
 class CalendarListFragment : Fragment(), DiaryListener {
     private var _binding: FragmentCalendarListBinding? = null
     private val binding get() = _binding
-    private lateinit var diaryDatabase: DiaryDatabase
     private lateinit var diaryAdapter: DiaryAdapter
-    private lateinit var date :String
+    private lateinit var date: String
+    private val viewModel: CalendarListViewModel by activityViewModels()
 
 
     override fun onCreateView(
@@ -46,7 +50,7 @@ class CalendarListFragment : Fragment(), DiaryListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        diaryDatabase = DiaryDatabase.getDatabase(requireContext())
+//        diaryDatabase = DiaryDatabase.getDatabase(requireContext())
         binding?.apply {
             ivEmpty.isVisible = true
             tvEmpty.isVisible = true
@@ -62,21 +66,41 @@ class CalendarListFragment : Fragment(), DiaryListener {
                         val datePick = LocalDate.of(year, monthOfYear + 1, dayOfMonth)
                         val dateFormat =
                             DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.getDefault())
-                         date = dateFormat.format(datePick)
+                        date = dateFormat.format(datePick)
+                        viewModel.getDiaryDate(date)
                         lifecycleScope.launch {
-                            tvDateTittle.text = date
-                            val data = diaryDatabase.diaryDao().getDiaryDate(date)
-                            if (data.isEmpty()) {
-                                ivEmpty.isVisible = true
-                                tvEmpty.isVisible = true
-                                rvDate.isVisible = false
-                            } else {
-                                ivEmpty.isVisible = false
-                                tvEmpty.isVisible = false
-                                rvDate.isVisible = true
-                            }
-                            initData(data)
+                            viewModel.diaryState.collect(object : FlowCollector<DiaryState> {
+                                override suspend fun emit(value: DiaryState) {
+                                    when (value) {
+                                        is DiaryState.Error -> {
+                                            Toast.makeText(
+                                                requireContext(),
+                                                value.message,
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+
+                                        DiaryState.Loading -> {}
+                                        is DiaryState.Success -> {
+                                            tvDateTittle.text = date
+                                            if (value.diary.isEmpty()) {
+                                                ivEmpty.isVisible = true
+                                                tvEmpty.isVisible = true
+                                                rvDate.isVisible = false
+                                            } else {
+                                                ivEmpty.isVisible = false
+                                                tvEmpty.isVisible = false
+                                                rvDate.isVisible = true
+                                                initData(value.diary)
+                                            }
+                                            initData(value.diary)
+                                        }
+                                    }
+                                }
+
+                            })
                         }
+
                     }
 
                 })
@@ -102,17 +126,7 @@ class CalendarListFragment : Fragment(), DiaryListener {
         deleteDialog.setPositiveButton(
             "iya"
         ) { dialog, which ->
-            lifecycleScope.launch {
-                diaryDatabase.diaryDao().deleteDiary(diaryEntities)
-                val data = diaryDatabase.diaryDao().getDiaryDate(date)
-                diaryAdapter.updateDiary(data)
-                if (data.isEmpty()) {
-                    binding?.ivEmpty?.isVisible = true
-                    binding?.tvEmpty?.isVisible = true
-                    binding?.rvDate?.isVisible = false
-                }
-
-            }
+            viewModel.deleteDiary(diaryEntities, date)
         }
         deleteDialog.show()
     }

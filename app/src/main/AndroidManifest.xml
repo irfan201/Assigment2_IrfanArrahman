@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".MyApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -13,13 +14,13 @@
         android:theme="@style/Theme.Assigment2_IrfanArrahman"
         tools:targetApi="31">
         <activity
-            android:name=".view.UpdateDiaryActivity"
+            android:name=".presenter.update.UpdateDiaryActivity"
             android:exported="false" />
         <activity
-            android:name=".view.DetailDiaryActivity"
+            android:name=".presenter.detail.DetailDiaryActivity"
             android:exported="false" />
         <activity
-            android:name=".view.SplashScreen"
+            android:name=".presenter.SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,10 +29,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.LoginActivity"
+            android:name=".presenter.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".view.MainActivity"
+            android:name=".presenter.MainActivity"
             android:exported="false" />
 
         <meta-data

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_primary"
-    tools:context=".view.DetailDiaryActivity">
+    tools:context=".presenter.detail.DetailDiaryActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
